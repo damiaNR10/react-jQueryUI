@@ -33,6 +33,9 @@ function DateDetails({ date, format }) {
   const theDate = moment(date, format).locale("pl");
   const now = moment().hour(0).minute(0).seconds(0);
   const nextValentines = moment([theDate.year(), "1", "14"]);
+  const summerStart = theDate.clone().startOf("year").add(5, "months").add(20, "days");
+  const summerEnd = moment(summerStart).month(8).date(23);
+  const programmersDay = moment(theDate).startOf("year").dayOfYear(256);
 
   if(theDate.isSameOrAfter(nextValentines)) {
     nextValentines.add(1, "year");
@@ -49,11 +52,11 @@ function DateDetails({ date, format }) {
         <li>
           Next valentine's day ({nextValentines.format("ll")}) will be {theDate.to(nextValentines)}
         </li>
-        <li>It does not fall within a leap year.</li>
+        <li>It {theDate.isLeapYear() ? "falls" : "does not fall"} within a leap year.</li>
         <li>
-          It is a summer day (it's between {"XXXX"} and {"YYYY"}).
+          It {theDate.isBetween(summerStart.clone().subtract(1, "days"), summerEnd.clone().add(1, "days")) ? "is" : "is not"} a summer day (it's between {summerStart.format("ll")} and {summerEnd.format("ll")}).
         </li>
-        <li>It is not the Programmer's Day ({"XXXX"}).</li>
+        <li>It { theDate.isSame(programmersDay, "day") ? "is" : "is not"} the Programmer's Day ({programmersDay.format("ll")}).</li>
       </ol>
     </div>
   );
