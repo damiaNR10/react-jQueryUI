@@ -1,10 +1,11 @@
 import ReactDOM from "react-dom";
 import './App.css';
 import React from 'react';
+import moment from 'moment';
 
 class App extends React.Component {
   state = {
-    selectedDate: "09/22/2019"
+    selectedDate: "09/22/2020"
   };
   render() {
     return (
@@ -29,19 +30,24 @@ class App extends React.Component {
 
 function DateDetails({ date, format }) {
 
-  const theDate = new Date(date);
-  const now = new Date();
+  const theDate = moment(date, format).locale("pl");
+  const now = moment().hour(0).minute(0).seconds(0);
+  const nextValentines = moment([theDate.year(), "1", "14"]);
+
+  if(theDate.isAfter(nextValentines)) {
+    nextValentines.add(1, "year");
+  }
 
   return (
     <div className="DateDetails">
       <h2>Fun facts about this date</h2>
       <ol>
-        <li>The date is: {theDate.toString()}</li>
+        <li>The date is: {theDate.format("llll")}</li>
         <li>
-          Counting from now ({now.toDateString()}), it would be {"6 years ago"}.
+          Counting from now ({now.format("LLLL")}), it would be {theDate.from(now)}.
         </li>
         <li>
-          Next valentine's day ({"XXXX"}) will be {"in 3 weeks"}
+          Next valentine's day ({nextValentines.format("ll")}) will be {theDate.to(nextValentines)}
         </li>
         <li>It does not fall within a leap year.</li>
         <li>
