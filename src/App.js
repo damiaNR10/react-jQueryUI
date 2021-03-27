@@ -34,7 +34,7 @@ function DateDetails({ date, format }) {
   const now = moment().hour(0).minute(0).seconds(0);
   const nextValentines = moment([theDate.year(), "1", "14"]);
 
-  if(theDate.isAfter(nextValentines)) {
+  if(theDate.isSameOrAfter(nextValentines)) {
     nextValentines.add(1, "year");
   }
 
